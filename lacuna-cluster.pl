@@ -10,6 +10,7 @@ my $clp = Algorithm::ClusterPoints->new(radius => 100, minimum_size => 1, ordere
 open my $fh,'<','colonylist.txt';
 my $current_empire='';
 my $first_present=0;
+my %coord2empire;
 while (my $line=<$fh>) {
   $line=~s/\s+$//s;
   if ($line=~/^\s*\d+\.\s*(\w.*[\w\)])$/s) {
@@ -22,6 +23,7 @@ while (my $line=<$fh>) {
     my ($x,$y)=($1,$2);
     #say "$x,$y - $line";
     say "$x,$y - $current_empire";
+    $coord2empire{"$x, $y"}=$current_empire;
     $clp->add_point($x,$y);
   }
 }
@@ -33,7 +35,8 @@ my @clusters = $clp->clusters_ix;
                    "cluster $i:",
                    map {
                        my ($x, $y) = $clp->point_coords($_);
-                       "($_: $x, $y)"
+                       my $empire=$coord2empire{"$x, $y"};
+                       "('$empire': $x, $y)"
                    } @{$clusters[$i]}
                  ), "\n"
            );
