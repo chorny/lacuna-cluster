@@ -15,6 +15,7 @@ while (my $line=<$fh>) {
   $line=~s/\s+$//s;
   if ($line=~/^\s*\d+\.\s*(\w.*[\w\)])$/s) {
     $current_empire=$1;
+    $current_empire=~s/\(.*?\)//;
     #say "$current_empire";
     $first_present=0;
   } elsif ($line=~/(-?\d+)x? , \s* (-?\d+)y?/sx) {
